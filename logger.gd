@@ -2,7 +2,7 @@ extends Node
 
 const FLUSH_EVERY = 100
 const LOGFILE_AMOUNT = 10
-const LOGFILE_PATH = 'user://citygamestudio-%s.log'
+const LOGFILE_PATH = 'user://myawesomelogger-%s.log'
 
 const FORMAT = '%s - %s - %s'
 const DEBUG = 'debug'
