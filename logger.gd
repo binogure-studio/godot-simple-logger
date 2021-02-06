@@ -9,6 +9,8 @@ const DEBUG = 'debug'
 const INFO = 'info'
 const WARNING = 'warning'
 const ERROR = 'error'
+const FIELDS_FORMAT = "{key}={value} "
+const LOG_WITH_FIELDS_FORMAT = "{fields} - Message={message}"
 
 var current_filename = get_logfilename()
 var logfile = File.new()
@@ -48,16 +50,34 @@ func debug(message):
 func info(message):
   _log(INFO, message)
 
+func infof(fields: Dictionary, message):
+	message = _format_log_with_fields(fields, message)
+	info(message)	
+
 func warning(message):
   _log(WARNING, message, true)
+
+func warningf(fields: Dictionary, message):
+	message = _format_log_with_fields(fields, message)
+	warning(message)
 
 func error(message):
   _log(ERROR, message, true)
 
+func errorf(fields: Dictionary, message):
+	message = _format_log_with_fields(fields, message)
+	error(message)
+	
 func _format_time():
   var time = OS.get_time()
 
   return '%02d:%02d:%02d' % [time.hour, time.minute, time.second]
+
+func _format_log_with_fields(fields: Dictionary, message):
+	var log_fields = ""
+	for field_key in fields.keys():
+		log_fields += FIELDS_FORMAT.format({"key": field_key, "value": fields[field_key]})
+	return LOG_WITH_FIELDS_FORMAT.format({"fields": log_fields, "message": message})
 
 func _log(level, message, flush = false):
   var log_message = FORMAT % [_format_time(), level, message]
